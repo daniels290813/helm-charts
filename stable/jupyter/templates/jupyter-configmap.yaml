@@ -531,8 +531,10 @@ data:
       log 'Configure tutorials'
       curl -L ${IGZ_JUPYTER_TUTORIALS_URL} -o /tmp/jupyter-tutorials
       curl -L ${IGZ_MLRUN_DEMOS_URL} -o /tmp/mlrun-demos
-      tar -C ${HOME} -xvf /tmp/jupyter-tutorials  --strip-components=1
-      rm -f /tmp/jupyter-tutorials
+      tar -C ${HOME} -xvf /tmp/jupyter-tutorials
+      mv ${HOME}/docs/tutorials ${HOME}/tutorials
+      mv ${HOME}/jupyter-welcome/* ${HOME}/
+      rm -rf docs jupyter-welcome /tmp/jupyter-tutorials
       mkdir -p ${HOME}/demos
       tar -C ${HOME}/demos -xvf /tmp/mlrun-demos  --strip-components=1
       rm -f /tmp/mlrun-demos
@@ -543,7 +545,7 @@ data:
     ## VSCode support
     # create symlinks to /igz (vscode server/extensions try to mv directories - not supported by fuse)
     log 'Configure VSCode support'
-    for dir in .vscode-server .vscode-server-insiders; do
+    for dir in .vscode-server .server-insiders; do
       [[ -e "${IGUAZIO_HOME}/$dir" ]] || mkdir -p ${IGUAZIO_HOME}/$dir
       [[ -e "${HOME}/$dir" ]] || ln -s ${IGUAZIO_HOME}/${dir} ${HOME}/${link}
     done
